@@ -1,27 +1,31 @@
 name: ssh-pipeline
+
 on:
   push:
     branches:
-      - feature/scripts
+      - main
+
 jobs:
   deploy:
-    runs-on: GitHub 
-     steps:
+    runs-on: ubuntu-latest
+    
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: SSH Deploy
         uses: cross-the-world/ssh-pipeline@v1.2.0
-        with:
-          host: https://github.com/12farooq/deploymentrepo.git
+        with: 
+          host: "" 
           port: 22 # optional, default is 22
-          user: 12farooq
-          pass: 12345678@farooq # optional
+          user: ""
+          pass: "" # optional
           connect_timeout: 30 # optional, default is 30s
           script: |
             # Your deployment script or commands go here
             # For example:
             echo "Hello, deploying your application!"
-            git pull origin feature/scripts
+            cd /github.com/12farooq/deploymentrepo.git
+            git pull origin main
             mkdir -p /home/github/test/test1
             mkdir -p /home/github/test/test2
