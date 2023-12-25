@@ -1,4 +1,4 @@
-name: Deploy Django App
+name: ssh-pipeline
 
 on:
   push:
@@ -8,26 +8,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ""
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Apply Database Migrations
-        run: python manage.py migrate
-
-      - name: Collect Static Files
-        run: python manage.py collectstatic --noinput
-
-      - name: Run Django Server
-        run: ""
+      - name: SSH Deploy
+        uses: cross-the-world/ssh-pipeline@v1.2.0
+        with: 
+          host: "" 
+          port: 22 # optional, default is 22
+          user: ""
+          pass: "" # optional
+          connect_timeout: 30 # optional, default is 30s
+          script: |
+            # Your deployment script or commands go here
+            # For example:
+            echo "Hello, deploying your application!"
+            cd /github.com/12farooq/deploymentrepo.git
+            git pull origin main
+            mkdir -p /home/github/test/test1
+            mkdir -p /home/github/test/test2
