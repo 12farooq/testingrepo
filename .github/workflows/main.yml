@@ -1,4 +1,4 @@
-name: ssh-pipeline
+name: django-deploy
 
 on:
   push:
@@ -16,16 +16,20 @@ jobs:
       - name: SSH Deploy
         uses: cross-the-world/ssh-pipeline@v1.2.0
         with: 
-          host: "" 
+          host: ""
           port: 22 # optional, default is 22
           user: ""
-          pass: "" # optional
+          pass: "" # Use a secret for sensitive information (recommended)
           connect_timeout: 30 # optional, default is 30s
           script: |
             # Your deployment script or commands go here
             # For example:
-            echo "Hello, deploying your application!"
-            cd /github.com/12farooq/deploymentrepo.git
+            echo "Hello, deploying your Django application!"
+            cd /path/to/your/django/project
             git pull origin main
-            mkdir -p /home/github/test/test1
-            mkdir -p /home/github/test/test2
+            source /path/to/your/virtualenv/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            systemctl restart gunicorn  # or any other command to restart your Django server
+
